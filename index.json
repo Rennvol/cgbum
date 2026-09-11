@@ -11,13 +11,13 @@
         "name": "Cgbum",
         "packageName": "eu.kanade.tachiyomi.extension.id.cgbum",
         "resources": {
-          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.3/tachiyomi-id.cgbum-v1.6.3.apk",
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.5/tachiyomi-id.cgbum-v1.6.5.apk",
           "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/cgbum/res/mipmap-xhdpi/ic_launcher.png",
-          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.3/tachiyomi-id.cgbum-v1.6.3.apk"
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.5/tachiyomi-id.cgbum-v1.6.5.apk"
         },
         "extensionLib": "1.6",
-        "versionCode": "3",
-        "versionName": "1.6.3",
+        "versionCode": "5",
+        "versionName": "1.6.5",
         "contentWarning": "CONTENT_WARNING_SAFE",
         "sources": [
           {
