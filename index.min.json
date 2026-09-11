@@ -2,10 +2,10 @@
   {
     "name": "Cgbum",
     "pkg": "eu.kanade.tachiyomi.extension.id.cgbum",
-    "apk": "https://github.com/Rennvol/cgbum/releases/download/v1.6.5/tachiyomi-id.cgbum-v1.6.5.apk",
+    "apk": "https://github.com/Rennvol/cgbum/releases/download/v1.6.6/tachiyomi-id.cgbum-v1.6.6.apk",
     "lang": "id",
-    "code": 5,
-    "version": "1.6.5",
+    "code": 6,
+    "version": "1.6.6",
     "nsfw": 0,
     "sources": [{ "name": "Cgbum", "lang": "id", "id": "985734201847562310", "baseUrl": "https://cgbum.com" }]
   }
