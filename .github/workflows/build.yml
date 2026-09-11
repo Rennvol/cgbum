@@ -11,8 +11,9 @@ jobs:
       - uses: actions/checkout@v4
         with: { repository: keiyoushi/extensions-source, path: extensions-source, fetch-depth: 1 }
       - run: |
-          rm -rf extensions-source/src/id/cgbum
+          rm -rf extensions-source/src/id/cgbum extensions-source/src/id/magadaxx
           cp -a cgbum-repo/src/id/cgbum extensions-source/src/id/cgbum
+          cp -a cgbum-repo/src/id/magadaxx extensions-source/src/id/magadaxx
           cp cgbum-repo/signingkey.jks extensions-source/signingkey.jks
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: '17' }
@@ -23,6 +24,8 @@ jobs:
           KEY_STORE_PASSWORD: cgbum123
           ALIAS: cgbum
           KEY_PASSWORD: cgbum123
-        run: ./gradlew :src:id:cgbum:assembleRelease --stacktrace
+        run: ./gradlew :src:id:cgbum:assembleRelease :src:id:magadaxx:assembleRelease --stacktrace
       - uses: actions/upload-artifact@v4
         with: { name: cgbum-apk, path: extensions-source/src/id/cgbum/build/outputs/apk/release/*.apk }
+      - uses: actions/upload-artifact@v4
+        with: { name: magadaxx-apk, path: extensions-source/src/id/magadaxx/build/outputs/apk/release/*.apk }
