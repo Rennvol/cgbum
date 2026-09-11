@@ -63,7 +63,7 @@ abstract class Cgbum : KeiSource() {
                 if (!seen.add(href)) continue
                 val title = el.selectFirst("h3, .comic-card-title a, .comic-card-title")?.text()?.trim()
                     ?: a.attr("title").trim().ifEmpty { null }
-                    ?: href.substringAfterLast("/").removeSuffix("cgbum").trim('-','_').ifEmpty { null } ?: continue
+                    ?: href.substringAfterLast("/").removeSuffix("cgbum").trim('-', '_').ifEmpty { null } ?: continue
                 if (title.length < 2) continue
                 mangas += SManga.create().apply {
                     this.title = title
@@ -79,7 +79,10 @@ abstract class Cgbum : KeiSource() {
                 val t = a.text().trim()
                 if (t.length < 2 || t.length > 120) continue
                 if (href.contains("/genre/") || href.contains("/type/")) continue
-                mangas += SManga.create().apply { title = t; setUrlWithoutDomain(href) }
+                mangas += SManga.create().apply {
+                    title = t
+                    setUrlWithoutDomain(href)
+                }
                 if (mangas.size >= 30) break
             }
         }
@@ -89,7 +92,11 @@ abstract class Cgbum : KeiSource() {
 
     override suspend fun fetchMangaUpdate(manga: SManga, chapters: List<SChapter>, fetchDetails: Boolean, fetchChapters: Boolean): SMangaUpdate {
         val doc = client.get(getMangaUrl(manga)).asJsoup()
-        val details = parseDetails(doc).apply { url = manga.url; if (title.isEmpty()) title = manga.title; initialized = true }
+        val details = parseDetails(doc).apply {
+            url = manga.url
+            if (title.isEmpty()) title = manga.title
+            initialized = true
+        }
         val chs = parseChapters(doc)
         return SMangaUpdate(details, chs)
     }
@@ -134,10 +141,22 @@ abstract class Cgbum : KeiSource() {
     private fun tryParseCgbumDate(s: String): Long {
         val t = s.lowercase(Locale.ROOT)
         return when {
-            "menit lalu" in t -> { val n = Regex("""(\d+)\s*menit""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0; java.util.Calendar.getInstance().apply { add(java.util.Calendar.MINUTE, -n) }.timeInMillis }
-            "jam lalu" in t -> { val n = Regex("""(\d+)\s*jam""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0; java.util.Calendar.getInstance().apply { add(java.util.Calendar.HOUR_OF_DAY, -n) }.timeInMillis }
-            "hari lalu" in t -> { val n = Regex("""(\d+)\s*hari""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0; java.util.Calendar.getInstance().apply { add(java.util.Calendar.DAY_OF_YEAR, -n) }.timeInMillis }
-            "minggu lalu" in t -> { val n = Regex("""(\d+)\s*minggu""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0; java.util.Calendar.getInstance().apply { add(java.util.Calendar.WEEK_OF_YEAR, -n) }.timeInMillis }
+            "menit lalu" in t -> {
+                val n = Regex("""(\d+)\s*menit""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0
+                java.util.Calendar.getInstance().apply { add(java.util.Calendar.MINUTE, -n) }.timeInMillis
+            }
+            "jam lalu" in t -> {
+                val n = Regex("""(\d+)\s*jam""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0
+                java.util.Calendar.getInstance().apply { add(java.util.Calendar.HOUR_OF_DAY, -n) }.timeInMillis
+            }
+            "hari lalu" in t -> {
+                val n = Regex("""(\d+)\s*hari""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0
+                java.util.Calendar.getInstance().apply { add(java.util.Calendar.DAY_OF_YEAR, -n) }.timeInMillis
+            }
+            "minggu lalu" in t -> {
+                val n = Regex("""(\d+)\s*minggu""").find(t)?.groupValues?.get(1)?.toIntOrNull() ?: return 0
+                java.util.Calendar.getInstance().apply { add(java.util.Calendar.WEEK_OF_YEAR, -n) }.timeInMillis
+            }
             else -> dateFmt.tryParseDate(s, dateFmtJakarta) ?: 0L
         }
     }
