@@ -6,7 +6,7 @@ plugins {
 
 keiyoushi {
     name = "MagaDaxX"
-    versionCode = 2
+    versionCode = 3
     libVersion = "1.6"
     contentWarning = ContentWarning.SAFE
     source {
