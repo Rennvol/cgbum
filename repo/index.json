@@ -27,6 +27,27 @@
             "homeUrl": "https://cgbum.com"
           }
         ]
+      },
+      {
+        "name": "MagaDaxX",
+        "packageName": "eu.kanade.tachiyomi.extension.id.magadaxx",
+        "resources": {
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.0/tachiyomi-id.magadaxx-v1.0.0.apk",
+          "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/magadaxx/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.0/tachiyomi-id.magadaxx-v1.0.0.apk"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "1",
+        "versionName": "1.0.0",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "985734201847562311",
+            "name": "MagaDaxX",
+            "language": "id",
+            "homeUrl": "https://mangadex.org"
+          }
+        ]
       }
     ]
   }
