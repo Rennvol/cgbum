@@ -5,13 +5,13 @@ import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import eu.kanade.tachiyomi.source.model.SMangaUpdate
 import keiyoushi.annotation.Source
 import keiyoushi.network.get
 import keiyoushi.network.rateLimit
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.parseAs
 import keiyoushi.utils.tryParse
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import okhttp3.CacheControl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -43,7 +43,6 @@ abstract class MagaDaxX : KeiSource() {
         if (page > 1) return MangasPage(emptyList(), false)
         val q = query.trim()
         if (q.isEmpty()) return getPopularManga(1)
-        // search scoped to id language, but return only our manga if title matches
         val url = "$apiBase/manga".toHttpUrl().newBuilder()
             .addQueryParameter("title", q)
             .addQueryParameter("ids[]", mangaId)
@@ -52,36 +51,43 @@ abstract class MagaDaxX : KeiSource() {
             .addQueryParameter("limit", "10")
             .build()
         val dto = client.get(url).parseAs<MangaListResponse>()
-        val list = dto.data.map { it.toSManga() }
-        return MangasPage(list, false)
+        return MangasPage(dto.data.map { it.toSManga() }, false)
     }
 
-    override suspend fun getMangaDetails(manga: SManga): SManga {
-        val url = "$apiBase/manga/$mangaId".toHttpUrl().newBuilder()
-            .addQueryParameter("includes[]", "cover_art")
-            .addQueryParameter("includes[]", "author")
-            .addQueryParameter("includes[]", "artist")
-            .build()
-        val dto = client.get(url).parseAs<MangaResponse>()
-        val data = dto.data ?: return manga
-        return data.toSMangaDetails()
-    }
-
-    override suspend fun getChapterList(manga: SManga): List<SChapter> {
-        val url = "$apiBase/manga/$mangaId/feed".toHttpUrl().newBuilder()
-            .addQueryParameter("translatedLanguage[]", "id")
-            .addQueryParameter("order[chapter]", "desc")
-            .addQueryParameter("order[volume]", "desc")
-            .addQueryParameter("limit", "500")
-            .addQueryParameter("includes[]", "scanlation_group")
-            .addQueryParameter("includeFuturePublishAt", "0")
-            .addQueryParameter("includeEmptyPages", "0")
-            .build()
-        val dto = client.get(url).parseAs<ChapterListResponse>()
-        return dto.data
-            .filter { it.attributes?.chapter != null }
-            .map { it.toSChapter() }
-            .sortedByDescending { it.chapter_number }
+    override suspend fun fetchMangaUpdate(
+        manga: SManga,
+        chapters: List<SChapter>,
+        fetchDetails: Boolean,
+        fetchChapters: Boolean,
+    ): SMangaUpdate {
+        var details: SManga? = null
+        var chList: List<SChapter>? = null
+        if (fetchDetails) {
+            val url = "$apiBase/manga/$mangaId".toHttpUrl().newBuilder()
+                .addQueryParameter("includes[]", "cover_art")
+                .addQueryParameter("includes[]", "author")
+                .addQueryParameter("includes[]", "artist")
+                .build()
+            val dto = client.get(url).parseAs<MangaResponse>()
+            dto.data?.let { details = it.toSMangaDetails() }
+        }
+        if (fetchChapters) {
+            val url = "$apiBase/manga/$mangaId/feed".toHttpUrl().newBuilder()
+                .addQueryParameter("translatedLanguage[]", "id")
+                .addQueryParameter("order[chapter]", "desc")
+                .addQueryParameter("order[volume]", "desc")
+                .addQueryParameter("limit", "500")
+                .addQueryParameter("includes[]", "scanlation_group")
+                .addQueryParameter("includeFuturePublishAt", "0")
+                .addQueryParameter("includeEmptyPages", "0")
+                .build()
+            val dto = client.get(url).parseAs<ChapterListResponse>()
+            chList = dto.data
+                .filter { it.attributes?.chapter != null }
+                .map { it.toSChapter() }
+                .sortedByDescending { it.chapter_number }
+        }
+        return SMangaUpdate(details, chList)
     }
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
@@ -99,7 +105,7 @@ abstract class MagaDaxX : KeiSource() {
 
     override fun getChapterUrl(chapter: SChapter): String = "https://mangadex.org" + chapter.url
 
-    override fun imageRequest(page: Page): Request = keiyoushi.network.GET(page.imageUrl, headers)
+    override fun imageRequest(page: Page): Request = Request.Builder().url(page.imageUrl!!).headers(headers).build()
 
     private fun MangaData.toSManga(): SManga = SManga.create().apply {
         url = "/manga/$id"
@@ -119,12 +125,9 @@ abstract class MagaDaxX : KeiSource() {
         description = buildString {
             if (desc.isNotBlank()) append(desc)
             if (alt.isNotBlank()) {
-                if (isNotEmpty()) append("\n\n")
-                append("Alt: $alt")
+                if (isNotEmpty()) append("\n\nAlt: $alt")
             }
         }
-        author = attrs?.let { it.authorNames } ?: ""
-        artist = author
         status = when (attrs?.status) {
             "ongoing" -> SManga.ONGOING
             "completed" -> SManga.COMPLETED
@@ -170,7 +173,6 @@ abstract class MagaDaxX : KeiSource() {
         val description: Map<String, String> = emptyMap(),
         val status: String? = null,
         val tags: List<Tag> = emptyList(),
-        @SerialName("authorNames") val authorNames: String? = null,
     )
 
     @Serializable
