@@ -1,22 +1,4 @@
 [
-  {
-    "name": "Cgbum",
-    "pkg": "eu.kanade.tachiyomi.extension.id.cgbum",
-    "apk": "https://github.com/Rennvol/cgbum/releases/download/v1.6.7/tachiyomi-id.cgbum-v1.6.7.apk",
-    "lang": "id",
-    "code": 7,
-    "version": "1.6.7",
-    "nsfw": 0,
-    "sources": [{ "name": "Cgbum", "lang": "id", "id": "985734201847562310", "baseUrl": "https://cgbum.com" }]
-  },
-  {
-    "name": "MagaDaxX",
-    "pkg": "eu.kanade.tachiyomi.extension.id.magadaxx",
-    "apk": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.0/tachiyomi-id.magadaxx-v1.0.0.apk",
-    "lang": "id",
-    "code": 1,
-    "version": "1.0.0",
-    "nsfw": 0,
-    "sources": [{ "name": "MagaDaxX", "lang": "id", "id": "985734201847562311", "baseUrl": "https://mangadex.org" }]
-  }
+  { "name": "Cgbum", "pkg": "eu.kanade.tachiyomi.extension.id.cgbum", "apk": "https://github.com/Rennvol/cgbum/releases/download/v1.6.7/tachiyomi-id.cgbum-v1.6.7.apk", "lang": "id", "code": 7, "version": "1.6.7", "nsfw": 0 },
+  { "name": "MagaDaxX", "pkg": "eu.kanade.tachiyomi.extension.id.magadaxx", "apk": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.1/tachiyomi-id.magadaxx-v1.0.1.apk", "lang": "id", "code": 2, "version": "1.0.1", "nsfw": 0 }
 ]
