@@ -1,0 +1,33 @@
+{
+  "name": "Cgbum",
+  "badgeLabel": "CGB",
+  "signingKey": "9add655a78e96c4ec7a53ef89dccb557cb5d767489fac5e785d671a5a75d4da2",
+  "contact": {
+    "website": "https://cgbum.com"
+  },
+  "extensionList": {
+    "extensions": [
+      {
+        "name": "Cgbum",
+        "packageName": "eu.kanade.tachiyomi.extension.id.cgbum",
+        "resources": {
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.2/tachiyomi-id.cgbum-v1.6.2.apk",
+          "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/cgbum/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.2/tachiyomi-id.cgbum-v1.6.2.apk"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "2",
+        "versionName": "1.6.2",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "985734201847562310",
+            "name": "Cgbum",
+            "language": "id",
+            "homeUrl": "https://cgbum.com"
+          }
+        ]
+      }
+    ]
+  }
+}
