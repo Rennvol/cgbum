@@ -170,11 +170,9 @@ abstract class Cgbum : KeiSource() {
         if (imgs.isEmpty()) imgs = doc.select(".reader-images img")
         return imgs.mapIndexedNotNull { i, img ->
             val raw = img.attr("data-url").ifEmpty { img.attr("data-src") }.ifEmpty { img.absUrl("src") }.ifEmpty { img.attr("src") }
-            if (raw.isEmpty()) return@mapNotNull null
+            if (raw.isEmpty()) return@mapIndexedNotNull null
             val abs = if (raw.startsWith("http")) raw else raw
             Page(i, url, abs)
         }
     }
-
-    override fun imageRequest(page: Page) = keiyoushi.network.GET(page.imageUrl!!, headersBuilder().add("Referer", "$baseUrl/").build())
 }
