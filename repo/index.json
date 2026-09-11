@@ -32,13 +32,13 @@
         "name": "MagaDaxX",
         "packageName": "eu.kanade.tachiyomi.extension.id.magadaxx",
         "resources": {
-          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.1/tachiyomi-id.magadaxx-v1.0.1.apk",
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.6.3/tachiyomi-id.magadaxx-v1.6.3.apk",
           "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/magadaxx/res/mipmap-xhdpi/ic_launcher.png",
-          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.1/tachiyomi-id.magadaxx-v1.0.1.apk"
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.6.3/tachiyomi-id.magadaxx-v1.6.3.apk"
         },
         "extensionLib": "1.6",
-        "versionCode": "106002",
-        "versionName": "1.6.2",
+        "versionCode": "106003",
+        "versionName": "1.6.3",
         "contentWarning": "CONTENT_WARNING_SAFE",
         "sources": [
           {
