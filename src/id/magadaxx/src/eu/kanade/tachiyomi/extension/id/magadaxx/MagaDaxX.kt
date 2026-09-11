@@ -72,12 +72,17 @@ abstract class MagaDaxX : KeiSource() {
             dto.data?.let { details = it.toSMangaDetails() }
         }
         if (fetchChapters) {
-            val url = "$apiBase/manga/$mangaId/feed".toHttpUrl().newBuilder()
+            val url = "$apiBase/chapter".toHttpUrl().newBuilder()
+                .addQueryParameter("manga", mangaId)
                 .addQueryParameter("translatedLanguage[]", "id")
                 .addQueryParameter("order[chapter]", "desc")
                 .addQueryParameter("order[volume]", "desc")
-                .addQueryParameter("limit", "500")
+                .addQueryParameter("limit", "100")
                 .addQueryParameter("includes[]", "scanlation_group")
+                .addQueryParameter("contentRating[]", "safe")
+                .addQueryParameter("contentRating[]", "suggestive")
+                .addQueryParameter("contentRating[]", "erotica")
+                .addQueryParameter("contentRating[]", "pornographic")
                 .addQueryParameter("includeFuturePublishAt", "0")
                 .addQueryParameter("includeEmptyPages", "0")
                 .build()
