@@ -121,16 +121,24 @@ abstract class Cgbum : KeiSource() {
             ?: doc.selectFirst("meta[property=og:title]")?.attr("content")?.substringBefore(" Bahasa")?.trim().orEmpty()
         thumbnail_url = doc.selectFirst("meta[property=og:image]")?.attr("content")
             ?: doc.selectFirst("img[src*=covers], img[src*=cover]")?.absUrl("src")
-        description = doc.selectFirst("meta[property=og:description]")?.attr("content")
-            ?: doc.selectFirst(".synopsis p, [class*=sinopsis] p")?.text()
-        val statusText = doc.selectFirst(".comic-card-badges, .status, [class*=status]")?.text() ?: doc.body().text()
+        // cgbum sinopsis full ada di div.synopsis-content / .comic-synopsis, og:description kepotong ~ CGBUM
+        val synopsisEl = doc.selectFirst(".synopsis-content, div.comic-synopsis .synopsis-content, div.comic-synopsis")
+        var synopsis = synopsisEl?.let { e ->
+            // clone remove toggle button
+            e.clone().apply { select("button").remove() }.text().trim()
+                .replace(Regex("\\s*~\\s*CGBUM\\s*$"), "").trim()
+        }?.takeIf { it.length > 40 }
+        if (synopsis == null) synopsis = doc.selectFirst("meta[property=og:description]")?.attr("content")?.takeIf { it.length > 40 }
+        if (synopsis == null) synopsis = doc.selectFirst("meta[name=description]")?.attr("content")?.takeIf { it.length > 40 }
+        description = synopsis
+        val statusText = doc.selectFirst(".comic-cover-badges, .badge-status, .comic-card-badges, .status, [class*=status]")?.text() ?: doc.body().text()
         status = when {
             statusText.contains("Ongoing", true) || statusText.contains("On Going", true) -> SManga.ONGOING
             statusText.contains("Completed", true) || statusText.contains("Tamat", true) -> SManga.COMPLETED
             else -> SManga.UNKNOWN
         }
         genre = doc.select("a[href*=genre]").joinToString { it.text().trim() }.takeIf { it.isNotEmpty() }
-        author = doc.selectFirst("a[href*=author]")?.text()?.trim()
+        author = doc.selectFirst("a[href*=author]")?.text()?.trim()?.takeIf { it != "-" && it.isNotEmpty() }
     }
 
     private fun parseChapters(doc: Document): List<SChapter> {
