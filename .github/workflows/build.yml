@@ -13,11 +13,16 @@ jobs:
       - run: |
           rm -rf extensions-source/src/id/cgbum
           cp -a cgbum-repo/src/id/cgbum extensions-source/src/id/cgbum
+          cp cgbum-repo/signingkey.jks extensions-source/signingkey.jks
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: '17' }
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: "8.10.2" }
       - working-directory: extensions-source
-        run: ./gradlew :src:id:cgbum:assembleDebug --stacktrace
+        env:
+          KEY_STORE_PASSWORD: cgbum123
+          ALIAS: cgbum
+          KEY_PASSWORD: cgbum123
+        run: ./gradlew :src:id:cgbum:assembleRelease --stacktrace
       - uses: actions/upload-artifact@v4
-        with: { name: cgbum-apk, path: extensions-source/src/id/cgbum/build/outputs/apk/debug/*.apk }
+        with: { name: cgbum-apk, path: extensions-source/src/id/cgbum/build/outputs/apk/release/*.apk }
