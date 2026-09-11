@@ -150,7 +150,7 @@ abstract class Cgbum : KeiSource() {
                 val dateText = a.parent()?.text() ?: a.attr("title")
                 date_upload = tryParseCgbumDate(dateText)
             }
-        }.distinctBy { it.url }.reversed()
+        }.distinctBy { it.url }.sortedByDescending { it.chapter_number }
     }
 
     private fun tryParseCgbumDate(s: String): Long {
