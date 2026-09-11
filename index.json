@@ -16,7 +16,7 @@
           "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.7/tachiyomi-id.cgbum-v1.6.7.apk"
         },
         "extensionLib": "1.6",
-        "versionCode": "7",
+        "versionCode": "106007",
         "versionName": "1.6.7",
         "contentWarning": "CONTENT_WARNING_SAFE",
         "sources": [
@@ -37,8 +37,8 @@
           "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/magadaxx-v1.0.1/tachiyomi-id.magadaxx-v1.0.1.apk"
         },
         "extensionLib": "1.6",
-        "versionCode": "2",
-        "versionName": "1.0.1",
+        "versionCode": "106002",
+        "versionName": "1.6.2",
         "contentWarning": "CONTENT_WARNING_SAFE",
         "sources": [
           {
