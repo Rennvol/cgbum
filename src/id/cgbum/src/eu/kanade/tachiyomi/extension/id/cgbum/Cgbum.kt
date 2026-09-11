@@ -13,6 +13,7 @@ import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
 import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.tryParseDate
+import kotlinx.serialization.json.JsonElement
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.nodes.Document
@@ -39,7 +40,7 @@ abstract class Cgbum : KeiSource() {
         return mangaListParse(client.get(url).asJsoup())
     }
 
-    override fun getFilterList(): FilterList = FilterList(TypeFilter(), StatusFilter(), GenreFilter(), SortFilter())
+    override fun getFilterList(data: JsonElement?): FilterList = FilterList(TypeFilter(), StatusFilter(), GenreFilter(), SortFilter())
 
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
         val q = query.trim()
