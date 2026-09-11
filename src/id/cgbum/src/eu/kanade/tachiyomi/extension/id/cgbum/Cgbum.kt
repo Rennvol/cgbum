@@ -11,6 +11,7 @@ import keiyoushi.network.get
 import keiyoushi.network.rateLimit
 import keiyoushi.source.KeiSource
 import keiyoushi.utils.asJsoup
+import keiyoushi.utils.firstInstanceOrNull
 import keiyoushi.utils.tryParseDate
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -38,18 +39,31 @@ abstract class Cgbum : KeiSource() {
         return mangaListParse(client.get(url).asJsoup())
     }
 
+    override fun getFilterList(): FilterList = FilterList(TypeFilter(), StatusFilter(), GenreFilter(), SortFilter())
+
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
         val q = query.trim()
-        val url = if (q.isNotEmpty()) {
-            "$baseUrl/cari/$q?page=$page".toHttpUrl()
-        } else {
-            "$baseUrl/daftar-komik?page=$page".toHttpUrl()
+        if (q.isNotEmpty()) {
+            val url = "$baseUrl/cari/$q?page=$page".toHttpUrl()
+            val doc = client.get(url).asJsoup()
+            if (doc.selectFirst("article.comic-card, a[href*=/komik/]") == null && doc.text().contains("tidak ditemukan", true)) {
+                return MangasPage(emptyList(), false)
+            }
+            return mangaListParse(doc)
         }
-        val doc = client.get(url).asJsoup()
-        if (doc.selectFirst("article.comic-card, a[href*=/komik/]") == null && doc.text().contains("tidak ditemukan", true)) {
-            return MangasPage(emptyList(), false)
-        }
-        return mangaListParse(doc)
+        val type = filters.firstInstanceOrNull<TypeFilter>()?.toUriPart() ?: "all"
+        val status = filters.firstInstanceOrNull<StatusFilter>()?.toUriPart() ?: "all"
+        val genre = filters.firstInstanceOrNull<GenreFilter>()?.toUriPart() ?: "all"
+        val sort = filters.firstInstanceOrNull<SortFilter>()?.toUriPart() ?: "all"
+        val url = "$baseUrl/daftar-komik".toHttpUrl().newBuilder().apply {
+            if (type != "all") addQueryParameter("type", type)
+            if (status != "all") addQueryParameter("status", status)
+            if (genre != "all") addQueryParameter("genre", genre)
+            if (sort != "all" && sort != "popular") addQueryParameter("sort", sort)
+            if (sort == "popular") addQueryParameter("sort", "popular")
+            addQueryParameter("page", page.toString())
+        }.build()
+        return mangaListParse(client.get(url).asJsoup())
     }
 
     private fun mangaListParse(doc: Document): MangasPage {
@@ -164,15 +178,13 @@ abstract class Cgbum : KeiSource() {
     override suspend fun getPageList(chapter: SChapter): List<Page> {
         val doc = client.get(getChapterUrl(chapter)).asJsoup()
         val url = getChapterUrl(chapter)
-        var imgs = doc.select("#readerImages img[data-url]")
-        if (imgs.isEmpty()) imgs = doc.select("#readerImages img[src]")
-        if (imgs.isEmpty()) imgs = doc.select("img[data-url]")
-        if (imgs.isEmpty()) imgs = doc.select(".reader-images img")
-        return imgs.mapIndexedNotNull { i, img ->
-            val raw = img.attr("data-url").ifEmpty { img.attr("data-src") }.ifEmpty { img.absUrl("src") }.ifEmpty { img.attr("src") }
+        var els = doc.select("#readerImages [data-url]")
+        if (els.isEmpty()) els = doc.select("[data-url]")
+        if (els.isEmpty()) els = doc.select("#readerImages img[src]")
+        return els.mapIndexedNotNull { i, el ->
+            val raw = el.attr("data-url").ifEmpty { el.attr("data-src") }.ifEmpty { el.absUrl("src") }.ifEmpty { el.attr("src") }
             if (raw.isEmpty()) return@mapIndexedNotNull null
-            val abs = if (raw.startsWith("http")) raw else raw
-            Page(i, url, abs)
+            Page(i, url, raw)
         }
     }
 }
