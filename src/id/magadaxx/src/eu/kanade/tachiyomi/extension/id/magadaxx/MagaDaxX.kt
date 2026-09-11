@@ -87,7 +87,7 @@ abstract class MagaDaxX : KeiSource() {
                 .map { it.toSChapter() }
                 .sortedByDescending { it.chapter_number }
         }
-        return SMangaUpdate(details, chList)
+        return SMangaUpdate(details ?: manga, chList ?: chapters)
     }
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
