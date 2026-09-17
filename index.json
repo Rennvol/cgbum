@@ -11,13 +11,13 @@
         "name": "Cgbum",
         "packageName": "eu.kanade.tachiyomi.extension.id.cgbum",
         "resources": {
-          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.7/tachiyomi-id.cgbum-v1.6.7.apk",
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.8/tachiyomi-id.cgbum-v1.6.8.apk",
           "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/cgbum/res/mipmap-xhdpi/ic_launcher.png",
-          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.7/tachiyomi-id.cgbum-v1.6.7.apk"
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.8/tachiyomi-id.cgbum-v1.6.8.apk"
         },
         "extensionLib": "1.6",
-        "versionCode": "106007",
-        "versionName": "1.6.7",
+        "versionCode": "106008",
+        "versionName": "1.6.8",
         "contentWarning": "CONTENT_WARNING_SAFE",
         "sources": [
           {
@@ -26,7 +26,8 @@
             "language": "id",
             "homeUrl": "https://cgbum.com"
           }
-        ]
+        ],
+        "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/v1.6.8/tachiyomi-id.cgbum-v1.6.8.apk"
       },
       {
         "name": "MagaDaxX",
