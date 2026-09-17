@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.extension.id.cgbum
 
+import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.Page
@@ -16,6 +17,7 @@ import keiyoushi.utils.tryParseDate
 import kotlinx.serialization.json.JsonElement
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.jsoup.nodes.Document
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -24,7 +26,15 @@ import java.util.Locale
 @Source
 abstract class Cgbum : KeiSource() {
 
-    override fun OkHttpClient.Builder.configureClient() = apply { rateLimit(2) }
+    override fun OkHttpClient.Builder.configureClient() = apply {
+        rateLimit(20) { it.host == "img.cgbum.com" }
+        rateLimit(2)
+    }
+
+    override fun imageRequest(page: Page): Request {
+        val h = headers.newBuilder().set("Referer", page.url).build()
+        return GET(page.imageUrl!!, h)
+    }
 
     private val dateFmt = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ROOT)
     private val dateFmtJakarta = ZoneId.of("Asia/Jakarta")

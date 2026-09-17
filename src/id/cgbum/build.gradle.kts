@@ -2,7 +2,7 @@ import io.github.keiyoushi.gradle.api.ContentWarning
 plugins { alias(kei.plugins.extension) }
 keiyoushi {
     name = "Cgbum"
-    versionCode = 7
+    versionCode = 8
     libVersion = "1.6"
     contentWarning = ContentWarning.SAFE
     source {
