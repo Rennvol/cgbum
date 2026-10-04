@@ -224,7 +224,7 @@ abstract class MikoRokuX : KeiSource() {
         val url = getChapterUrl(chapter)
         // chapter url is Blogger post URL; fetch and extract <img src>
         return try {
-            val doc = client.get(url.toHttpUrl()).asJsoup()
+            val doc = client.get(url).asJsoup()
             var els = doc.select("div.separator a[href] img[src]")
             if (els.isEmpty()) els = doc.select("img[src*=blogger.googleusercontent]")
             if (els.isEmpty()) els = doc.select("#readerImages [data-url]")
