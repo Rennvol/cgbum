@@ -3,7 +3,7 @@ plugins { alias(kei.plugins.extension) }
 keiyoushi {
     name = "MikoRokuX"
     versionCode = 1
-    libVersion = "1.0"
+    libVersion = "1.6"
     contentWarning = ContentWarning.NSFW
     source {
         lang = "id"
