@@ -20,10 +20,10 @@
   {
     "name": "MikoRokuX",
     "pkg": "eu.kanade.tachiyomi.extension.id.mikorokux",
-    "apk": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.1/tachiyomi-id.mikorokux-v1.6.1.apk",
+    "apk": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.2/tachiyomi-id.mikorokux-v1.6.2.apk",
     "lang": "id",
-    "code": 106001,
-    "version": "1.6.1",
+    "code": 106002,
+    "version": "1.6.2",
     "nsfw": 1
   }
 ]
