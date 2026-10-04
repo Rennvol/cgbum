@@ -16,5 +16,14 @@
     "code": 106003,
     "version": "1.6.3",
     "nsfw": 0
+  },
+  {
+    "name": "MikoRokuX",
+    "pkg": "eu.kanade.tachiyomi.extension.id.mikorokux",
+    "apk": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.1/tachiyomi-id.mikorokux-v1.6.1.apk",
+    "lang": "id",
+    "code": 106001,
+    "version": "1.6.1",
+    "nsfw": 1
   }
 ]

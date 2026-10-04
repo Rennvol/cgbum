@@ -49,6 +49,28 @@
             "homeUrl": "https://mangadex.org"
           }
         ]
+      },
+      {
+        "name": "MikoRokuX",
+        "packageName": "eu.kanade.tachiyomi.extension.id.mikorokux",
+        "resources": {
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.1/tachiyomi-id.mikorokux-v1.6.1.apk",
+          "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/mikorokux/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.1/tachiyomi-id.mikorokux-v1.6.1.apk"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "106001",
+        "versionName": "1.6.1",
+        "contentWarning": "CONTENT_WARNING_NSFW",
+        "sources": [
+          {
+            "id": "985734201847562312",
+            "name": "MikoRokuX",
+            "language": "id",
+            "homeUrl": "https://mikoroku.com"
+          }
+        ],
+        "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.1/tachiyomi-id.mikorokux-v1.6.1.apk"
       }
     ]
   }
