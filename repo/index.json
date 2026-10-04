@@ -54,13 +54,13 @@
         "name": "MikoRokuX",
         "packageName": "eu.kanade.tachiyomi.extension.id.mikorokux",
         "resources": {
-          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.4/tachiyomi-id.mikorokux-v1.6.4.apk",
+          "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.7/tachiyomi-id.mikorokux-v1.6.7.apk",
           "iconUrl": "https://cdn.jsdelivr.net/gh/Rennvol/cgbum@main/src/id/mikorokux/res/mipmap-xhdpi/ic_launcher.png",
-          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.4/tachiyomi-id.mikorokux-v1.6.4.apk"
+          "jarUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.7/tachiyomi-id.mikorokux-v1.6.7.apk"
         },
         "extensionLib": "1.6",
-        "versionCode": "106004",
-        "versionName": "1.6.4",
+        "versionCode": "106005",
+        "versionName": "1.6.7",
         "contentWarning": "CONTENT_WARNING_NSFW",
         "sources": [
           {
@@ -70,7 +70,7 @@
             "homeUrl": "https://mikoroku.com"
           }
         ],
-        "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.4/tachiyomi-id.mikorokux-v1.6.4.apk"
+        "apkUrl": "https://github.com/Rennvol/cgbum/releases/download/mikorokux-v1.6.7/tachiyomi-id.mikorokux-v1.6.7.apk"
       }
     ]
   }
