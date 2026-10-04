@@ -315,11 +315,8 @@ abstract class MikoRokuX : KeiSource() {
             els.mapIndexedNotNull { i, el ->
                 val raw = el.absUrl("src").ifEmpty { el.attr("data-url") }.ifEmpty { el.absUrl("data-src") }
                 if (raw.isEmpty() || raw.contains("favicon") || raw.contains("logo")) return@mapIndexedNotNull null
-                // filter to chapter images: must contain blogger or image host
-                if (!raw.contains("blogger") && !raw.contains("lh3") && !raw.contains("images.weserv")) {
-                    // keep only if inside separator/post body
-                    if (!el.parents().any { it.hasClass("separator") || it.tagName() == "article" }) return@mapIndexedNotNull null
-                }
+                // keep only if inside separator/post body
+                if (!el.parents().any { it.hasClass("separator") || it.tagName() == "article" }) return@mapIndexedNotNull null
                 Page(i, url, raw)
             }.distinctBy { it.imageUrl }
         } catch (_: Exception) {
