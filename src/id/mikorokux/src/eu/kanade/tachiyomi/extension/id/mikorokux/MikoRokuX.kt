@@ -33,7 +33,11 @@ abstract class MikoRokuX : KeiSource() {
         return GET(page.imageUrl!!, h)
     }
 
-    private val jsonLenient = Json { ignoreUnknownKeys = true; isLenient = true; explicitNulls = false }
+    private val jsonLenient = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        explicitNulls = false
+    }
     private val allMangaUrl = "https://raw.githubusercontent.com/moemaomao/mymangadata/main/all-manga.json"
 
     @Serializable
@@ -49,12 +53,12 @@ abstract class MikoRokuX : KeiSource() {
         val artist: String = "",
     )
 
-    private suspend fun fetchAllManga(): List<AllManga> {
-        return try {
-            val req = Request.Builder().url(allMangaUrl).cacheControl(CacheControl.FORCE_NETWORK).build()
-            val txt = client.newCall(req).execute().use { it.body.string() }
-            jsonLenient.decodeFromString<List<AllManga>>(txt)
-        } catch (_: Exception) { emptyList() }
+    private suspend fun fetchAllManga(): List<AllManga> = try {
+        val req = Request.Builder().url(allMangaUrl).cacheControl(CacheControl.FORCE_NETWORK).build()
+        val txt = client.newCall(req).execute().use { it.body.string() }
+        jsonLenient.decodeFromString<List<AllManga>>(txt)
+    } catch (_: Exception) {
+        emptyList()
     }
 
     private fun AllManga.toSManga(): SManga = SManga.create().apply {
@@ -66,12 +70,9 @@ abstract class MikoRokuX : KeiSource() {
     override suspend fun getPopularManga(page: Int): MangasPage = mangaList(page, "", null)
     override suspend fun getLatestUpdates(page: Int): MangasPage = mangaList(page, "", null)
 
-    override fun getFilterList(data: kotlinx.serialization.json.JsonElement?): FilterList =
-        FilterList(TypeFilter(), StatusFilter(), GenreFilter(), SortFilter())
+    override fun getFilterList(data: kotlinx.serialization.json.JsonElement?): FilterList = FilterList(TypeFilter(), StatusFilter(), GenreFilter(), SortFilter())
 
-    override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
-        return mangaList(page, query, filters)
-    }
+    override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage = mangaList(page, query, filters)
 
     private suspend fun mangaList(page: Int, query: String, filters: FilterList?): MangasPage {
         val all = fetchAllManga()
@@ -141,7 +142,11 @@ abstract class MikoRokuX : KeiSource() {
                 val txt = client.newCall(Request.Builder().url(feedUrl).cacheControl(CacheControl.FORCE_NETWORK).build()).execute().use { it.body.string() }
                 val root = jsonLenient.parseToJsonElement(txt)
                 val entries = root.let { el ->
-                    try { el.let { it as kotlinx.serialization.json.JsonObject }["feed"]?.let { (it as kotlinx.serialization.json.JsonObject)["entry"] } } catch (_: Exception) { null }
+                    try {
+                        el.let { it as kotlinx.serialization.json.JsonObject }["feed"]?.let { (it as kotlinx.serialization.json.JsonObject)["entry"] }
+                    } catch (_: Exception) {
+                        null
+                    }
                 } as? kotlinx.serialization.json.JsonArray ?: continue
                 for (entryEl in entries) {
                     val obj = entryEl as? kotlinx.serialization.json.JsonObject ?: continue
@@ -166,7 +171,11 @@ abstract class MikoRokuX : KeiSource() {
                         name = rawTitle
                         setUrlWithoutDomain(href)
                         chapter_number = num.toFloatOrNull() ?: -1f
-                        date_upload = try { java.time.Instant.parse(t).toEpochMilli() } catch (_: Exception) { 0L }
+                        date_upload = try {
+                            java.time.Instant.parse(t).toEpochMilli()
+                        } catch (_: Exception) {
+                            0L
+                        }
                     }
                 }
             } catch (_: Exception) { }
@@ -182,7 +191,7 @@ abstract class MikoRokuX : KeiSource() {
     private fun extractChapterNumber(rawTitle: String, linkUrl: String): String {
         val t = rawTitle.trim()
         val url = linkUrl
-        fun norm(s: String) = s.trim().replace(Regex("[_-]") ,".").replace(Regex("\\.+"),".").trim('.')
+        fun norm(s: String) = s.trim().replace(Regex("[_-]"), ".").replace(Regex("\\.+"), ".").trim('.')
         fun hasDec(s: String) = Regex("\\d+\\.\\d+").containsMatchIn(s)
         var urlNum: String? = null
         val mUrl = Regex("""chapter[_-]?(\\d+(?:[.-]\\d+)?)""", RegexOption.IGNORE_CASE).find(url)
@@ -195,7 +204,10 @@ abstract class MikoRokuX : KeiSource() {
         )
         for (re in pats) {
             val m = re.find(t)
-            if (m != null) { titleNum = norm(m.groupValues[1].replace(",", ".")); break }
+            if (m != null) {
+                titleNum = norm(m.groupValues[1].replace(",", "."))
+                break
+            }
         }
         if (titleNum == null) {
             val all = Regex("""(\\d+(?:[.,]\\d+)?)""").findAll(t).map { it.groupValues[1] }.toList()
@@ -227,6 +239,8 @@ abstract class MikoRokuX : KeiSource() {
                 }
                 Page(i, url, raw)
             }.distinctBy { it.imageUrl }
-        } catch (_: Exception) { emptyList() }
+        } catch (_: Exception) {
+            emptyList()
+        }
     }
 }
