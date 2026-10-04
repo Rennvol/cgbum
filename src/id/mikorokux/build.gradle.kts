@@ -2,7 +2,7 @@ import io.github.keiyoushi.gradle.api.ContentWarning
 plugins { alias(kei.plugins.extension) }
 keiyoushi {
     name = "MikoRokuX"
-    versionCode = 1
+    versionCode = 2
     libVersion = "1.6"
     contentWarning = ContentWarning.NSFW
     source {
